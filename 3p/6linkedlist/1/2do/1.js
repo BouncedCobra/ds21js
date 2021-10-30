@@ -20,17 +20,6 @@
  * @see {@link https://jsdoc.app}
  */
  
- let l = new LinkedList
- l.InsertFirst(25)
- l.InsertEnd(45)
- l.InsertEnd(28)
- l.InsertEnd(17)
- l.InsertEnd(16)
- l.InsertEnd(15)
- l.InsertEnd(14)
- l.InsertEnd(13)
-
- 
 class Node {     
     constructor(data,next=null){         
         this.data=data         
@@ -46,7 +35,8 @@ class LinkedList{
     } 
 
     AddFirst(data){
-        let node=new  Node(data, null)     
+        let node=new  Node(data, null)   
+        node.next = this.head 
         this.head=node
         if(this.tail==null){
             this.tail=node
@@ -56,8 +46,12 @@ class LinkedList{
 
      AddEnd(data){
         let node=new Node(data,null)
-        this.tail.next=node
-        this.tail=node
+        if(this.head==null){
+            this.AddFirst(data)
+        }else{
+            this.tail.next=node
+            this.tail=node
+        }
         this.size++
     } 
 
@@ -106,6 +100,13 @@ class LinkedList{
     }
     
     SizeList(){
-            console.log(this.size)
+        console.log(this.size)
     }
 }
+let l = new LinkedList
+
+for(i=0; i<100; i++){
+    l.AddEnd((Math.random()*100).toFixed(0));
+}
+ l.Contains(17)
+ l.PrintList()
