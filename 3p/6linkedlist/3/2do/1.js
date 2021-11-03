@@ -8,9 +8,23 @@
  * linked-list implementation exercise
  * edmodo
  */
+ class Node {     
+    constructor(data,next=null){         
+        this.data=data         
+        this.next=next     
+    } 
+} 
+
+class LinkedList{     
+    constructor(){         
+        this.head=null         
+        this.size=0 
+        this.tail=null    
+    }
+}
 
 function Queue() {
-    this.dataStore = [];
+    this.dataStore = LinkedList;
     this.enqueue = enqueue;
     this.dequeue = dequeue;
     this.front = front;
@@ -20,28 +34,52 @@ function Queue() {
 
 }
     
-function enqueue(element) {
-    this.dataStore.push(element);
+function enqueue(data) {
+    let node=new Node(data,null)
+        if(this.head==null){
+            let node=new  Node(data)   
+            node.next = this.head 
+            this.head=node
+
+            if(this.tail==null){
+                this.tail=node
+            }
+            this.size++  
+        }
+        else{
+            this.tail.next=node
+            this.tail=node
+        }
+        this.size++
 }
 
 function dequeue() {
-    return this.dataStore.shift();
+    var current=this.head;
+    console.log(current.data);        
+    current=this.head;  
+
+    for(var i=0;i>this.size;i++){             
+        previous=current                         
+        current=current.next  
+        console.log("for")        
+    }     
 }
 
 function front() {
-    return this.dataStore[0];
+    return this.head.data;
 }
 
 function back() {
-    return this.dataStore[this.dataStore.length-1];
+    return this.tail.data;
 }
 
 function toString() {
-    var retStr = "";
-    for (var i = 0; i < this.dataStore.length; ++i) {
-        retStr += this.dataStore[i] + "\n";
-    }
-    return retStr;
+    var current=this.head 
+
+    while(current){         
+        console.log(current.data)         
+        current=current.next         
+    }    
 }
     
 function empty() {
@@ -61,8 +99,7 @@ var q = new Queue();
 q.enqueue("Meredith");
 q.enqueue("Cynthia");
 q.enqueue("Jennifer");
-print(q.toString());
-q.dequeue();
-print(q.toString());
+q.toString();
+q.dequeue()
 print("Front of queue: " + q.front());
 print("Back of queue: " + q.back());
