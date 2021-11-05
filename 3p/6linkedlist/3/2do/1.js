@@ -8,6 +8,15 @@
  * linked-list implementation exercise
  * edmodo
  */
+
+ function inicio(){
+    t0 = performance.now();
+}
+function final(){
+    t1 =  performance.now();
+}
+
+inicio();
  class Node {     
     constructor(data,next=null){         
         this.data=data         
@@ -54,15 +63,12 @@ function enqueue(data) {
 }
 
 function dequeue() {
-    var current=this.head;
-    console.log(current.data);        
-    current=this.head;  
-
-    for(var i=0;i>this.size;i++){             
-        previous=current                         
-        current=current.next  
-        console.log("for")        
-    }     
+    var current=this.head
+    current=this.head        
+        Eliminado=current                         
+        current=current.next
+        this.head=current     
+    console.log("Dato eliminado "+ Eliminado.data)        
 }
 
 function front() {
@@ -94,12 +100,14 @@ function empty() {
 function print(element){
     console.log(element);
 }
-
+let cont=0;
 var q = new Queue();
-q.enqueue("Meredith");
-q.enqueue("Cynthia");
-q.enqueue("Jennifer");
-q.toString();
-q.dequeue()
-print("Front of queue: " + q.front());
-print("Back of queue: " + q.back());
+for(t=0;t<7;t++){
+    for(i=0; i<10000; i++){
+        q.enqueue((Math.random()*100).toFixed(0));
+        cont++
+    }
+}
+final();
+print("tiempo "+((t1-t0)/7).toFixed(2)+" en milisegundos");
+print("Numero de pasos "+cont);
