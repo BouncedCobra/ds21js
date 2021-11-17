@@ -107,7 +107,6 @@ for(t=0;t<7;t++){
         cont++
     }
 }
-q.toString()
 final();
 print("tiempo "+((t1-t0)/7).toFixed(2)+" en milisegundos");
 print("Numero de pasos "+cont);
