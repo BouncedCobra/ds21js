@@ -5,8 +5,7 @@
 
 var n = 1000;
 function Eratosthenes(n){
-    var nArray = new Array (n +1);
-    nArray.fill(true);
+    var nArray = new Array (n +1); nArray.fill(true)
     nArray[0] = nArray[1] = false;
 
     for(var i = 2; i<=Math.sqrt(n); i++){
