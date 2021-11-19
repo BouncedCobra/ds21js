@@ -26,76 +26,232 @@
  * 
  */
 
-
-class Node {     
-    constructor(data,left=null,right=null){         
-        this.data=data         
-        this.left=left
-        this.right=right     
-    } 
-} 
-let cont=0,cont1=0
-class LinkedList{     
-    constructor(){         
-        this.head=null         
-        this.size=0 
-        this.tail=null    
-    } 
-
-    AddFirst(data){
-        let node=new  Node(data)   
-        cont++
-        if(cont==1){
-            node.left = this.head 
+    class Node {
+        constructor (value) {
+        this.value = value
+        this.right = null
+        this.left = null
         }
-        if(cont==2){
-            node.right =this.head
-            cont=0
-        }
-        this.head=node
-        if(this.tail==null){
-            this.tail=node
-        }
-        this.size++     
     }
-
-     AddEnd(data){
-        let node=new Node(data)
-        if(this.head==null){
-            this.AddFirst(data)
-        }else{
-            if(this.tail.left==null || this.tail.right==null){
-                cont1++
-                if(cont1==1){
-                    this.tail.left=node
-                }
-                if(cont1==2){
-                    this.tail.right=node
-                    cont1=0
-                    this.tail=node
-                }
-            }else{
-                this.tail=node
+    
+    class Tree {
+        constructor () {
+        this.root = null
+        }
+    
+        isEmpty () {
+        return this.root === null
+        }
+    
+        add (value) {
+        // arbol no tiene elementos
+        if (this.isEmpty()) {
+            this.root = new Node(value)
+            return
+        }
+    
+        var aux = this.root
+    
+        while (aux) {
+            // vamos hacia la izquierda
+            if (value < aux.value) {
+            if (aux.left) {
+                aux = aux.left
+            } else {
+                aux.left = new Node(value)
+                return
+            }
+            } else { // vamos hacia la derecha
+            if (aux.right) {
+                aux = aux.right
+            } else {
+                aux.right = new Node(value)
+                return
+            }
             }
         }
-        this.size++
-    } 
-
-    PrintList(){         
-        var current=this.head 
-
-        while(current){         
-            console.log(current.data)         
-            current=current.next         
-        }     
-    }  
+        }
     
-    SizeList(){
-        console.log(this.size)
+        addRecursive (value, node = this.root) {
+        if (!node) {
+            this.root = new Node(value)
+            return
+        }
+    
+        if (value < node.value) {
+            if (node.left) {
+            return this.addRecursive(value, node.left)
+            }
+            node.left = new Node(value)
+            return
+        } else { // vamos hacia la derecha
+            if (node.right) {
+            return this.addRecursive(value, node.right)
+            }
+            node.right = new Node(value)
+            return
+        }
+        }
+    
+        find (value) {
+        if (this.isEmpty()) {
+            return null
+        }
+    
+        var aux = this.root
+        if (aux.value === value) {
+            return aux
+        }
+    
+        while(aux) {
+            // si encontramos el nodo con el valor
+            // paramos de iterar.
+            if (aux.value === value) {
+            break
+            }
+            // seguimos buscando a la derecha
+            if (aux.value < value) {
+            aux = aux.right
+            } else if (aux.value > value) {
+            // seguimos buscando a la izquierda
+            aux = aux.left
+            }
+        }
+        // retornamos el nodo encontrado.
+        // si no encontramos el nodo con el valor
+        // aux, toma el valor null.
+        return aux
+        }
+    
+        findRecursive(value, node = this.root) {
+        if (node.value === value) {
+            return node
+        }
+    
+        if (node.value < value) {
+            return this.findRecursive(value, node.right)
+        } else if (node.value > value) {
+            return this.findRecursive(value, node.left)
+        }
+        }
+    
+        findMin(node = this.root) {
+        if (!this.isEmpty()) {
+            /**
+             * siempre a la izquierda de cualquier nodo
+             * estará el menor valor.
+             * iteramos hasta el último menor.
+             */
+            while (node.left) {
+            node = node.left
+            }
+            return node
+        }
+        }
+    
+        delete (value, node = this.root) {
+        if (!node) {
+            return null
+        }
+        if (node.value === value) {
+            // no tiene hijos
+            if (!node.left && !node.right) {
+            return null
+            }
+            // no tiene hijo izquierdo
+            if (!node.left) {
+            return node.right
+            }
+            // no tiene hijo derecho
+            if (!node.right) {
+            return node.left
+            }
+    
+            // tiene dos hijos
+            // buscamos el menor de los hijos
+            var temp = this.findMin(node.right)
+            // con ese valor reemplazamos el valor del nodo que queremos eliminar.
+            node.value = temp.value;
+            // seguimos iterando para reemplazar la rama que cambio,
+            // eliminando el nodo que está repetido
+            node.right = this.delete(temp.value, node.right)
+            return node;
+        }
+        // buscamos a la derecha
+        if (node.value < value) {
+            node.right = this.delete(value, node.right)
+            return node
+        }
+        // buscamos a la izquierda
+        if (node.value > value) {
+            node.left = this.delete(value, node.left)
+            return node
+        }
+        }
+        print (node = this.root) {
+        if (!node) {
+            return
+        }
+        this.print(node.left)
+        console.log(node.value)
+        this.print(node.right)
+        }
+        /**
+         * recorre primero toda la rama izquierda
+         * de izquierda al centro.
+         * Luego imprime la raíz, y finalmente
+         * recorre la rama derecha, del centro hacia
+         * la derecha.
+         */
+        inOrder (node = this.root) {
+        if (!node) {
+            return
+        }
+        this.inOrder(node.left)
+        console.log(node.value)
+        this.inOrder(node.right)
+        }
+        /**
+         * Imprime primero la raíz, luego
+         * toda la rama izquierda de izquierda al centro.
+         * y finalmente recorre la rama derecha,
+         * del centro hacia la derecha.
+         */
+        preOrder (node = this.root) {
+        if (!node) {
+            return
+        }
+        console.log(node.value)
+        this.preOrder(node.left)
+        this.preOrder(node.right)
+        }
+        /**
+         * Recorre el árbol de izquierda hacia el centro.
+         * Luego del centro hacia la derecha, y finalmente
+         * imprime la raíz.
+         */
+        postOrder (node = this.root) {
+        if (!node) {
+            return
+        }
+        this.postOrder(node.left)
+        this.postOrder(node.right)
+        console.log(node.value)
+        }
     }
-}
-let l = new LinkedList
-
-for(i=0; i<100; i++){
-    l.AddEnd((Math.random()*100).toFixed(0));
-}
+    
+    var t = new Tree()
+    
+    for (var i = 0; i < 3; i++) {
+        t.add((Math.random()*10).toFixed(0))
+    }
+    console.log("In Order---------------")
+    t.inOrder()
+    console.log()
+    console.log("Pre Order--------------")
+    t.preOrder()
+    console.log()
+    console.log("PostOrder--------------")
+    t.postOrder()
+    console.log()
+    t.print()
